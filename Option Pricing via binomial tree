@@ -1,0 +1,46 @@
+INSTRUCTION
+
+Use a two-period CRR binomial tree (N = 2) to price a European put option which payoff function is (K − S_T)^+ with strike price K = 100 and maturity T = 1 year. Other parameters are S_0 = 100, r = 1% and σ = 20%.
+
+TENTATIVE CODE IN C++
+
+#include <iostream>
+#include <math.h>
+using namespace std;
+
+double get_u(const double, const double);
+double get_delta_t(const double, const double);
+double get_d(const double);
+double get_q(const double, const double, const double, const double);
+int main()
+{
+    const double r = 0.01, vol = 0.20, N = 2., T = 1.;
+    const int K = 100, S0 = 100;
+    double delta_t, u, d, q;
+    delta_t = get_delta_t(T,N);
+    u = get_u(vol,delta_t);
+    d = get_d(u);
+    q = get_q(r, delta_t, d ,u);
+    
+    
+    cout << delta_t << endl;
+    cout << u << endl;
+    cout << d << endl;
+    cout << q << endl;
+    return 0;
+    
+}
+
+double get_delta_t(const double T, const double N){
+    return T/N;
+}
+double get_u(const double sigma, const double delta_t){
+    return exp(sigma * sqrt(delta_t));
+}
+double get_d(const double u){
+    return 1 / u;
+}
+double get_q(const double r, const double delta_t, const double d, const double u){
+    return (exp(r * sqrt(delta_t)) - d) / (u - d);
+
+}
